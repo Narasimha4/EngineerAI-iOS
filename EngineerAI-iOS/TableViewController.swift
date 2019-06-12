@@ -15,8 +15,8 @@ class TableViewController: UITableViewController {
     @IBOutlet weak var footer: UIView!
     var hud: MBProgressHUD = MBProgressHUD()
     var hits = [Hits]()
-    var pageOffset = 0
-    var offset = 1
+    var pageOffset = 0 // total number of pages, initial value is 0
+    var offset = 1 // current page
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -67,7 +67,6 @@ class TableViewController: UITableViewController {
     }
     
     // MARK: - Table view data source
-    
     override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
         
@@ -97,7 +96,6 @@ class TableViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
         return 1
     }
     
@@ -106,7 +104,6 @@ class TableViewController: UITableViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! TableViewCell
         cell.title.text = hits[indexPath.section].title
         cell.createdAt.text = "Created at: \(hits[indexPath.section].created_at ?? "")"
-        
         if indexPath.section == hits.count - 1 {
             self.autoLoad()
         }
