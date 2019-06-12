@@ -105,7 +105,7 @@ class TableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! TableViewCell
         cell.title.text = hits[indexPath.section].title
-        cell.createdAt.text = hits[indexPath.section].created_at
+        cell.createdAt.text = "Created at: \(hits[indexPath.section].created_at ?? "")"
         
         if indexPath.section == hits.count - 1 {
             self.autoLoad()
