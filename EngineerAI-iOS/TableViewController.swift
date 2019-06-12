@@ -37,6 +37,8 @@ class TableViewController: UITableViewController {
                     let jsonData = try JSONSerialization.data(withJSONObject: hitsList, options: .prettyPrinted)
                     self.getPostList(with: jsonData)
                 } catch {}
+            } else {
+                self.hud.hide(animated: true)
             }
         }, onFailure: { (err) in
             self.hud.hide(animated: true)
