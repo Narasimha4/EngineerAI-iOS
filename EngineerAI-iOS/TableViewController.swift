@@ -26,7 +26,6 @@ class TableViewController: UITableViewController {
     func loading(view:UIView) {
         hud = MBProgressHUD.showAdded(to: view, animated: true)
         hud.mode = MBProgressHUDMode.indeterminate
-        hud.label.text = "Loading"
     }
     
     func getPosts() {
@@ -40,11 +39,12 @@ class TableViewController: UITableViewController {
                 } catch {}
             }
         }, onFailure: { (err) in
+            self.hud.hide(animated: true)
         })
     }
     
     func getPostList(with data:Data) {
-         do {
+        do {
             let newHits = try JSONDecoder().decode([Hits].self, from:data)
             hits.append(contentsOf: newHits)
             offset += 1
@@ -65,20 +65,43 @@ class TableViewController: UITableViewController {
         header.backgroundColor = UIColor.clear
         return header
     }
-
+    
     // MARK: - Table view data source
-
+    
     override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
-        return hits.count
+        
+        if hits.count == 0 {
+            let rect = CGRect(x: 0,
+                              y: 0,
+                              width: self.tableView.bounds.size.width,
+                              height: self.tableView.bounds.size.height)
+            let noDataLabel: UILabel = UILabel(frame: rect)
+            noDataLabel.numberOfLines = 0
+            noDataLabel.text = "Loading...."
+            noDataLabel.textColor = UIColor.black
+            noDataLabel.textAlignment = NSTextAlignment.center
+            self.tableView.backgroundView = noDataLabel
+            self.tableView.separatorStyle = .none
+            footer.isHidden = true
+            guard ReachabilityManager.shared.isConnectedToNetwork() else {
+                noDataLabel.text = "Please check internet connection"
+                return 0
+            }
+            return 0
+        } else {
+            self.tableView.backgroundView = nil
+            footer.isHidden = false
+            return hits.count
+        }
     }
-
+    
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
         return 1
     }
-
-
+    
+    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! TableViewCell
         cell.title.text = hits[indexPath.section].title

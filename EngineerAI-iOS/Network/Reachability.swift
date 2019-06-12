@@ -1,10 +1,11 @@
 //
-//  HaribolAPI.swift
-//  HariBol
+//  Reachability.swift
+//  EngineerAI-iOS
 //
-//  Created by Narasimha on 06/01/19.
-//  Copyright © 2019 haribol. All rights reserved.
+//  Created by Narasimha on 12/06/19.
+//  Copyright © 2019 fissionlabs. All rights reserved.
 //
+
 
 import Foundation
 import SystemConfiguration
